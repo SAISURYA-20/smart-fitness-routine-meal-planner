@@ -4,6 +4,7 @@ import { RegisterComponent } from './features/auth/register/register';
 import { ProfileComponent } from './features/profile/profile';
 import { WorkoutsComponent } from './features/workouts/workouts';
 import { MealsComponent } from './features/meals/meals';
+import { ProgressComponent } from './features/progress/progress';
 
 
 
@@ -13,6 +14,7 @@ export const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'workouts', component: WorkoutsComponent },
   { path: 'meals', component: MealsComponent },
+  { path: 'progress', component: ProgressComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' }
 
 ];
