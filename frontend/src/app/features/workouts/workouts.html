@@ -1,10 +1,13 @@
 <div class="workout-container">
-  <mat-card *ngFor="let day of workouts" class="workout-card">
-
+  <div *ngIf="loading" class="loading-message">Loading workouts...</div>
+  
+  <mat-card *ngFor="let day of workouts; let i = index" class="workout-card">
     <h3>{{ day.day }}</h3>
 
-    <div *ngFor="let exercise of day.exercises">
-      <mat-checkbox>
+    <div *ngFor="let exercise of day.exercises; let exerciseIndex = index" class="exercise-item">
+      <mat-checkbox 
+        [checked]="isExerciseCompleted(day.day, exerciseIndex)"
+        (change)="onExerciseChange(day.day, exerciseIndex, $event.checked)">
         {{ exercise }}
       </mat-checkbox>
     </div>

@@ -1,11 +1,21 @@
 <div class="meal-container">
+  <div *ngIf="loading" class="loading-message">Loading meals...</div>
+  
   <mat-card *ngFor="let day of mealPlan" class="meal-card">
-
     <h3>{{ day.day }}</h3>
 
-    <div *ngFor="let meal of day.meals" class="meal-item">
-      <strong>{{ meal.type }}:</strong>
-      {{ meal.name }} - {{ meal.calories }} kcal
+    <div *ngFor="let meal of day.meals; let mealIndex = index" class="meal-item">
+      <mat-checkbox 
+        [checked]="isMealCompleted(day.day, mealIndex)"
+        (change)="onMealChange(day.day, mealIndex, $event.checked)">
+        <strong>{{ meal.type }}:</strong>
+        {{ meal.name }} - {{ meal.calories }} kcal
+      </mat-checkbox>
+    </div>
+
+    <div class="calorie-summary">
+      <strong>Total: {{ getTotalCalories(day.day) }} kcal</strong> | 
+      Consumed: {{ getConsumedCalories(day.day) }} kcal
     </div>
 
   </mat-card>
