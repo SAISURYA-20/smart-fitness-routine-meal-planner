@@ -1,0 +1,118 @@
+# ============================================
+# Smart Fitness Planner - Git Ignore
+# ============================================
+
+# ============================================
+# Dependencies
+# ============================================
+node_modules/
+**/node_modules/
+package-lock.json
+
+# ============================================
+# Environment Variables
+# ============================================
+.env
+.env.local
+.env.development
+.env.production
+.env.*
+!.env.example
+
+# ============================================
+# Build Output
+# ============================================
+dist/
+build/
+out-tsc/
+tmp/
+*.js.map
+
+# ============================================
+# Angular
+# ============================================
+.angular/
+frontend/.angular/
+frontend/dist/
+
+# ============================================
+# TypeScript
+# ============================================
+*.tsbuildinfo
+backend/dist/
+
+# ============================================
+# Logs
+# ============================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ============================================
+# Testing
+# ============================================
+coverage/
+.nyc_output/
+test-results/
+junit.xml
+
+# ============================================
+# OS Generated Files
+# ============================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ============================================
+# IDE / Editor
+# ============================================
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.sublime-workspace
+*.sublime-project
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# ============================================
+# Cache
+# ============================================
+.cache/
+.parcel-cache/
+.eslintcache
+.npm/
+.yarn/
+
+# ============================================
+# Misc
+# ============================================
+*.pid
+*.seed
+*.pid.lock
+*.orig
+.temp/
+temp/
+
+# ============================================
+# Secrets & Credentials
+# ============================================
+*.pem
+*.key
+*.crt
+secrets/
+credentials/

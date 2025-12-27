@@ -1,0 +1,105 @@
+<div class="meal-page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Nutrition Plan 🥗</h1>
+      <p class="page-subtitle">Your personalized daily meal plan</p>
+    </div>
+    <div class="header-actions" *ngIf="weeklyPlan.length > 0">
+      <div class="stat-box"><span class="stat-val">{{ getTotalConsumed() }}/{{ getTotalMeals() }}</span><span class="stat-lbl">Consumed</span></div>
+      <button class="btn-primary" (click)="generatePlan()" [disabled]="generating">
+        <mat-spinner *ngIf="generating" diameter="18"></mat-spinner>
+        <mat-icon *ngIf="!generating">refresh</mat-icon>
+        {{ generating ? 'Generating...' : 'Regenerate' }}
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading"><mat-spinner diameter="40"></mat-spinner><p>Loading meal plan...</p></div>
+
+  <div *ngIf="!loading && weeklyPlan.length === 0" class="empty">
+    <mat-icon>restaurant</mat-icon>
+    <h3>No Meal Plan Yet</h3>
+    <p>Generate a personalized meal plan to start tracking your nutrition.</p>
+    <button class="btn-primary" (click)="generatePlan()" [disabled]="generating">
+      <mat-icon *ngIf="!generating">auto_awesome</mat-icon>
+      {{ generating ? 'Generating...' : 'Generate Plan' }}
+    </button>
+  </div>
+
+  <div *ngIf="!loading && weeklyPlan.length > 0" class="content">
+    <div class="tabs">
+      <button *ngFor="let day of weeklyPlan; let i = index" class="tab" [class.active]="selectedDay === i" (click)="selectedDay = i">
+        <span class="tab-day">{{ day.day.substring(0, 3) }}</span>
+        <span class="tab-pct" [class.done]="getDayProgress(day) === 100">{{ getDayProgress(day) }}%</span>
+      </button>
+    </div>
+
+    <div class="day-view" *ngIf="weeklyPlan[selectedDay] as day">
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon purple"><mat-icon>flag</mat-icon></div>
+          <div><div class="stat-value">{{ getTotalCalories(day) }}</div><div class="stat-label">Target kcal</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green"><mat-icon>check_circle</mat-icon></div>
+          <div><div class="stat-value">{{ getConsumedCalories(day) }}</div><div class="stat-label">Consumed</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" [class.orange]="getRemainingCalories(day) >= 0" [class.red]="getRemainingCalories(day) < 0">
+            <mat-icon>{{ getRemainingCalories(day) >= 0 ? 'trending_down' : 'warning' }}</mat-icon>
+          </div>
+          <div><div class="stat-value">{{ getRemainingCalories(day) < 0 ? -getRemainingCalories(day) : getRemainingCalories(day) }}</div><div class="stat-label">{{ getRemainingCalories(day) >= 0 ? 'Remaining' : 'Over' }}</div></div>
+        </div>
+        <div class="stat-card progress-card">
+          <div class="ring">
+            <svg viewBox="0 0 36 36"><path class="ring-bg" d="M18 2.0845a15.9155 15.9155 0 010 31.831 15.9155 15.9155 0 010-31.831"/><path class="ring-fg" [style.strokeDasharray]="getCalorieProgress(day)+',100'" d="M18 2.0845a15.9155 15.9155 0 010 31.831 15.9155 15.9155 0 010-31.831"/></svg>
+            <span>{{ getCalorieProgress(day) }}%</span>
+          </div>
+          <div class="stat-label">Progress</div>
+        </div>
+      </div>
+
+      <div class="card macros-card">
+        <div class="card-header"><h3><mat-icon>pie_chart</mat-icon> Macros Consumed</h3></div>
+        <div class="card-body macros-grid">
+          <div class="macro">
+            <div class="macro-head"><div class="macro-icon p">P</div><div><span class="macro-val">{{ getTotalMacro(day, 'protein') }}g</span><span class="macro-lbl">Protein</span></div></div>
+            <mat-progress-bar mode="determinate" [value]="getTotalMacro(day, 'protein') / 1.5"></mat-progress-bar>
+          </div>
+          <div class="macro">
+            <div class="macro-head"><div class="macro-icon c">C</div><div><span class="macro-val">{{ getTotalMacro(day, 'carbs') }}g</span><span class="macro-lbl">Carbs</span></div></div>
+            <mat-progress-bar mode="determinate" [value]="getTotalMacro(day, 'carbs') / 2.5" color="accent"></mat-progress-bar>
+          </div>
+          <div class="macro">
+            <div class="macro-head"><div class="macro-icon f">F</div><div><span class="macro-val">{{ getTotalMacro(day, 'fat') }}g</span><span class="macro-lbl">Fat</span></div></div>
+            <mat-progress-bar mode="determinate" [value]="getTotalMacro(day, 'fat') / 0.7" color="warn"></mat-progress-bar>
+          </div>
+        </div>
+      </div>
+
+      <div class="meals-grid">
+        <div *ngFor="let type of mealTypes" class="meal-type-card card">
+          <div class="meal-type-header">
+            <div class="meal-type-icon" [ngClass]="type.color"><mat-icon>{{ type.icon }}</mat-icon></div>
+            <div><h4>{{ type.label }}</h4><span>{{ getMealTypeCalories(day, type.value) }} kcal</span></div>
+          </div>
+          <div class="meals-list">
+            <div *ngFor="let meal of getMealsByType(day, type.value)" class="meal-item" [class.done]="isConsumed(day, meal.id)">
+              <mat-checkbox [checked]="isConsumed(day, meal.id)" (change)="toggleMeal(day.day, meal.id)" color="primary"></mat-checkbox>
+              <div class="meal-info">
+                <span class="meal-name" [class.strike]="isConsumed(day, meal.id)">{{ meal.name }}</span>
+                <div class="meal-macros">
+                  <span class="mm p">{{ meal.protein }}g P</span>
+                  <span class="mm c">{{ meal.carbs }}g C</span>
+                  <span class="mm f">{{ meal.fat }}g F</span>
+                </div>
+              </div>
+              <span class="meal-cal">{{ meal.calories }} kcal</span>
+            </div>
+            <div *ngIf="getMealsByType(day, type.value).length === 0" class="no-meals">No {{ type.label.toLowerCase() }} planned</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
