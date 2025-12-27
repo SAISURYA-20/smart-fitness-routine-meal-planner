@@ -1,0 +1,89 @@
+<div class="progress-page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Progress Tracker 📊</h1>
+      <p class="page-subtitle">Monitor your fitness journey and achievements</p>
+    </div>
+    <button *ngIf="progress.length > 0" class="btn-primary" (click)="generatePlan()" [disabled]="generating">
+      <mat-spinner *ngIf="generating" diameter="18"></mat-spinner>
+      <mat-icon *ngIf="!generating">refresh</mat-icon>
+      {{ generating ? 'Generating...' : 'Regenerate Plan' }}
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading"><mat-spinner diameter="40"></mat-spinner><p>Loading progress...</p></div>
+
+  <div *ngIf="!loading && progress.length === 0" class="empty">
+    <mat-icon>analytics</mat-icon>
+    <h3>No Progress Data Yet</h3>
+    <p>Generate a plan and start completing workouts and meals to track your progress.</p>
+    <button class="btn-primary" (click)="generatePlan()" [disabled]="generating">
+      <mat-icon *ngIf="!generating">auto_awesome</mat-icon>
+      {{ generating ? 'Generating...' : 'Generate Plan' }}
+    </button>
+  </div>
+
+  <div *ngIf="!loading && progress.length > 0" class="content">
+    <div class="stats-row">
+      <div class="stat-card ring-stat">
+        <div class="ring purple">
+          <svg viewBox="0 0 36 36"><path class="ring-bg" d="M18 2.0845a15.9155 15.9155 0 010 31.831 15.9155 15.9155 0 010-31.831"/><path class="ring-fg" [style.strokeDasharray]="summary.overallExerciseProgress+',100'" d="M18 2.0845a15.9155 15.9155 0 010 31.831 15.9155 15.9155 0 010-31.831"/></svg>
+          <span>{{ summary.overallExerciseProgress }}%</span>
+        </div>
+        <div><div class="stat-value">Workout Progress</div><div class="stat-label">{{ getTotalCompletedEx() }} of {{ getTotalExercises() }} exercises</div></div>
+      </div>
+      <div class="stat-card ring-stat">
+        <div class="ring green">
+          <svg viewBox="0 0 36 36"><path class="ring-bg" d="M18 2.0845a15.9155 15.9155 0 010 31.831 15.9155 15.9155 0 010-31.831"/><path class="ring-fg" [style.strokeDasharray]="summary.overallMealProgress+',100'" d="M18 2.0845a15.9155 15.9155 0 010 31.831 15.9155 15.9155 0 010-31.831"/></svg>
+          <span>{{ summary.overallMealProgress }}%</span>
+        </div>
+        <div><div class="stat-value">Nutrition Progress</div><div class="stat-label">{{ getTotalConsumedMeals() }} of {{ getTotalMeals() }} meals</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon orange"><mat-icon>local_fire_department</mat-icon></div>
+        <div><div class="stat-value">{{ summary.targetCalories }}</div><div class="stat-label">Daily Calorie Target</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon blue"><mat-icon>emoji_events</mat-icon></div>
+        <div><div class="stat-value">{{ getCompleteDays() }}/7</div><div class="stat-label">Days Completed</div></div>
+      </div>
+    </div>
+
+    <div class="charts-row">
+      <div class="card chart-card">
+        <div class="card-header"><h3><mat-icon>bar_chart</mat-icon> Weekly Exercise Progress</h3></div>
+        <div class="card-body chart-body"><canvas baseChart [data]="exerciseChartData" [options]="barChartOptions" type="bar"></canvas></div>
+      </div>
+      <div class="card chart-card">
+        <div class="card-header"><h3><mat-icon>show_chart</mat-icon> Calorie Intake Trend</h3></div>
+        <div class="card-body chart-body"><canvas baseChart [data]="calorieChartData" [options]="lineChartOptions" type="line"></canvas></div>
+      </div>
+    </div>
+
+    <div class="card breakdown-card">
+      <div class="card-header"><h3><mat-icon>calendar_today</mat-icon> Daily Breakdown</h3></div>
+      <div class="card-body">
+        <div class="breakdown-table">
+          <div class="breakdown-header"><span>Day</span><span>Exercises</span><span>Meals</span><span>Calories</span><span>Status</span></div>
+          <div *ngFor="let day of progress" class="breakdown-row">
+            <span class="day-name">{{ day.day }}</span>
+            <div class="progress-cell"><mat-progress-bar mode="determinate" [value]="day.exerciseProgress"></mat-progress-bar><span>{{ day.completedExercises }}/{{ day.totalExercises }}</span></div>
+            <div class="progress-cell"><mat-progress-bar mode="determinate" [value]="day.mealProgress" color="accent"></mat-progress-bar><span>{{ day.consumedMeals }}/{{ day.totalMeals }}</span></div>
+            <span class="cal-cell">{{ day.consumedCalories }} / {{ day.targetCalories }}</span>
+            <span class="status-badge" [class.complete]="day.exerciseProgress === 100 && day.mealProgress === 100">{{ day.exerciseProgress === 100 && day.mealProgress === 100 ? 'Complete' : 'In Progress' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card achievements-card">
+      <div class="card-header"><h3><mat-icon>emoji_events</mat-icon> Achievements</h3></div>
+      <div class="card-body achievements-grid">
+        <div class="achievement" [class.unlocked]="summary.overallExerciseProgress >= 50"><div class="ach-icon">🏃</div><h4>Halfway There</h4><p>Complete 50% of exercises</p></div>
+        <div class="achievement" [class.unlocked]="summary.overallMealProgress >= 50"><div class="ach-icon">🥗</div><h4>Nutrition Focused</h4><p>Follow 50% of meal plan</p></div>
+        <div class="achievement" [class.unlocked]="summary.overallExerciseProgress === 100"><div class="ach-icon">💪</div><h4>Workout Warrior</h4><p>Complete all exercises</p></div>
+        <div class="achievement" [class.unlocked]="summary.overallMealProgress === 100"><div class="ach-icon">🏆</div><h4>Perfect Nutrition</h4><p>Follow entire meal plan</p></div>
+      </div>
+    </div>
+  </div>
+</div>

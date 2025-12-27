@@ -1,0 +1,68 @@
+<div class="workout-page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Workout Routine 💪</h1>
+      <p class="page-subtitle">Your personalized weekly exercise plan</p>
+    </div>
+    <div class="header-actions" *ngIf="weeklyPlan.length > 0">
+      <div class="stat-box"><span class="stat-val">{{ getTotalCompleted() }}/{{ getTotalExercises() }}</span><span class="stat-lbl">Done</span></div>
+      <button class="btn-primary" (click)="generatePlan()" [disabled]="generating">
+        <mat-spinner *ngIf="generating" diameter="18"></mat-spinner>
+        <mat-icon *ngIf="!generating">refresh</mat-icon>
+        {{ generating ? 'Generating...' : 'Regenerate' }}
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading"><mat-spinner diameter="40"></mat-spinner><p>Loading...</p></div>
+
+  <div *ngIf="!loading && weeklyPlan.length === 0" class="empty">
+    <mat-icon>fitness_center</mat-icon>
+    <h3>No Workout Plan Yet</h3>
+    <p>Generate a plan to start your fitness journey.</p>
+    <button class="btn-primary" (click)="generatePlan()" [disabled]="generating">
+      <mat-icon *ngIf="!generating">auto_awesome</mat-icon>
+      {{ generating ? 'Generating...' : 'Generate Plan' }}
+    </button>
+  </div>
+
+  <div *ngIf="!loading && weeklyPlan.length > 0" class="content">
+    <div class="tabs">
+      <button *ngFor="let day of weeklyPlan; let i = index" class="tab" [class.active]="selectedDay === i" (click)="selectedDay = i">
+        <span class="tab-day">{{ day.day.substring(0, 3) }}</span>
+        <span class="tab-pct" [class.done]="getDayProgress(day) === 100">{{ getDayProgress(day) }}%</span>
+      </button>
+    </div>
+
+    <div class="day-view" *ngIf="weeklyPlan[selectedDay] as day">
+      <div class="day-head">
+        <div><h2>{{ day.day }}</h2><p *ngIf="day.exercises?.length">{{ day.exercises.length }} exercises</p><p *ngIf="!day.exercises?.length">Rest Day</p></div>
+        <div class="ring" *ngIf="day.exercises?.length">
+          <svg viewBox="0 0 36 36"><path class="ring-bg" d="M18 2.0845a15.9155 15.9155 0 010 31.831 15.9155 15.9155 0 010-31.831"/><path class="ring-fg" [style.strokeDasharray]="getDayProgress(day)+',100'" d="M18 2.0845a15.9155 15.9155 0 010 31.831 15.9155 15.9155 0 010-31.831"/></svg>
+          <span>{{ getDayProgress(day) }}%</span>
+        </div>
+      </div>
+
+      <div *ngIf="!day.exercises?.length" class="rest">
+        <mat-icon>self_improvement</mat-icon><h3>Rest & Recovery</h3><p>Let your muscles recover today!</p>
+      </div>
+
+      <div *ngIf="day.exercises?.length" class="exercises">
+        <div *ngFor="let ex of day.exercises; let i = index" class="ex-card" [class.done]="isCompleted(day, ex.id)">
+          <div class="ex-num">{{ i + 1 }}</div>
+          <div class="ex-body">
+            <div class="ex-row">
+              <div class="ex-info">
+                <h4>{{ ex.name }}</h4>
+                <div class="ex-meta"><span><mat-icon>repeat</mat-icon>{{ ex.sets }} sets</span><span><mat-icon>fitness_center</mat-icon>{{ ex.reps }} reps</span><span *ngIf="ex.duration"><mat-icon>timer</mat-icon>{{ ex.duration }}s</span></div>
+                <span class="ex-cat">{{ ex.category }}</span>
+              </div>
+              <mat-checkbox [checked]="isCompleted(day, ex.id)" (change)="toggleExercise(day.day, ex.id)" color="primary"></mat-checkbox>
+            </div>
+            <p class="ex-desc">{{ ex.instructions }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

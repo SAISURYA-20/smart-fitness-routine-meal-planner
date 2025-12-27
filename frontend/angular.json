@@ -3,6 +3,10 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
+<<<<<<< HEAD
+    "fitness-planner": {
+      "projectType": "application",
+=======
     "frontend-app": {
       "projectType": "application",
       "schematics": {
@@ -10,11 +14,28 @@
           "style": "scss"
         }
       },
+>>>>>>> 519f709e43c7e95fa57c44864e52a4317045d85b
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
         "build": {
+<<<<<<< HEAD
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/fitness-planner",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": ["zone.js"],
+            "tsConfig": "tsconfig.json",
+            "inlineStyleLanguage": "scss",
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": [
+              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/styles.scss"
+            ],
+            "scripts": []
+=======
           "builder": "@angular/build:application",
           "options": {
             "browser": "src/main.ts",
@@ -37,10 +58,15 @@
             "styles": [
               "src/styles.scss"
             ]
+>>>>>>> 519f709e43c7e95fa57c44864e52a4317045d85b
           },
           "configurations": {
             "production": {
               "budgets": [
+<<<<<<< HEAD
+                { "type": "initial", "maximumWarning": "2mb", "maximumError": "5mb" },
+                { "type": "anyComponentStyle", "maximumWarning": "10kb", "maximumError": "20kb" }
+=======
                 {
                   "type": "initial",
                   "maximumWarning": "500kB",
@@ -51,11 +77,18 @@
                   "maximumWarning": "4kB",
                   "maximumError": "8kB"
                 }
+>>>>>>> 519f709e43c7e95fa57c44864e52a4317045d85b
               ],
               "outputHashing": "all"
             },
             "development": {
+<<<<<<< HEAD
+              "buildOptimizer": false,
               "optimization": false,
+              "vendorChunk": true,
+=======
+              "optimization": false,
+>>>>>>> 519f709e43c7e95fa57c44864e52a4317045d85b
               "extractLicenses": false,
               "sourceMap": true
             }
@@ -63,6 +96,14 @@
           "defaultConfiguration": "production"
         },
         "serve": {
+<<<<<<< HEAD
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": { "browserTarget": "fitness-planner:build:production" },
+            "development": { "browserTarget": "fitness-planner:build:development" }
+          },
+          "defaultConfiguration": "development"
+=======
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
@@ -101,11 +142,16 @@
               "src/styles.scss"
             ]
           }
+>>>>>>> 519f709e43c7e95fa57c44864e52a4317045d85b
         }
       }
     }
   },
   "cli": {
+<<<<<<< HEAD
+    "analytics": "bf6ee6e3-ac20-4ec9-b776-a1f0a255a60b"
+=======
     "analytics": false
+>>>>>>> 519f709e43c7e95fa57c44864e52a4317045d85b
   }
 }

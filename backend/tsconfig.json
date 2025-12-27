@@ -10,7 +10,10 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
+<<<<<<< HEAD
+=======
     "moduleResolution": "node",
+>>>>>>> 519f709e43c7e95fa57c44864e52a4317045d85b
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true
@@ -18,4 +21,7 @@
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }
+<<<<<<< HEAD
+=======
 
+>>>>>>> 519f709e43c7e95fa57c44864e52a4317045d85b

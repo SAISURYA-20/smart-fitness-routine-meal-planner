@@ -1,0 +1,53 @@
+.workout-page { max-width: 900px; }
+.page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+.page-title { font-size: 1.5rem; font-weight: 700; color: #1e293b; margin-bottom: 4px; }
+.page-subtitle { color: #64748b; font-size: 0.9rem; }
+.header-actions { display: flex; align-items: center; gap: 16px; }
+.stat-box { text-align: center; padding: 8px 16px; background: #f1f5f9; border-radius: 10px; }
+.stat-val { display: block; font-size: 1.25rem; font-weight: 700; color: #2563eb; }
+.stat-lbl { font-size: 0.7rem; color: #64748b; }
+.btn-primary { display: flex; align-items: center; gap: 8px; padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 10px; font-weight: 600; font-size: 0.875rem; cursor: pointer; }
+.btn-primary:hover { background: #1d4ed8; }
+.btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
+.btn-primary mat-icon { font-size: 18px; width: 18px; height: 18px; }
+.loading { display: flex; flex-direction: column; align-items: center; padding: 60px 20px; gap: 16px; }
+.loading p { color: #64748b; }
+.empty { background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 60px 24px; text-align: center; }
+.empty mat-icon { font-size: 48px; width: 48px; height: 48px; color: #94a3b8; margin-bottom: 16px; }
+.empty h3 { font-size: 1.25rem; color: #1e293b; margin-bottom: 8px; }
+.empty p { color: #64748b; margin-bottom: 24px; }
+.content { display: flex; flex-direction: column; gap: 20px; }
+.tabs { display: flex; gap: 6px; padding: 8px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; overflow-x: auto; }
+.tab { flex: 1; min-width: 55px; padding: 10px 6px; border: none; background: transparent; border-radius: 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.tab:hover { background: #f1f5f9; }
+.tab.active { background: #2563eb; }
+.tab.active .tab-day, .tab.active .tab-pct { color: white; }
+.tab-day { font-weight: 600; color: #374151; font-size: 0.8rem; }
+.tab-pct { font-size: 0.7rem; color: #64748b; font-weight: 600; }
+.tab-pct.done { color: #10b981; }
+.day-head { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; }
+.day-head h2 { font-size: 1.25rem; font-weight: 700; color: #1e293b; margin-bottom: 4px; }
+.day-head p { color: #64748b; font-size: 0.875rem; }
+.ring { width: 56px; height: 56px; position: relative; }
+.ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring-bg { fill: none; stroke: #e2e8f0; stroke-width: 3; }
+.ring-fg { fill: none; stroke: #2563eb; stroke-width: 3; stroke-linecap: round; }
+.ring span { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.75rem; font-weight: 700; color: #2563eb; }
+.rest { background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 1px solid #bbf7d0; border-radius: 12px; padding: 48px 24px; text-align: center; }
+.rest mat-icon { font-size: 48px; width: 48px; height: 48px; color: #10b981; margin-bottom: 16px; }
+.rest h3 { font-size: 1.25rem; color: #166534; margin-bottom: 8px; }
+.rest p { color: #15803d; }
+.exercises { display: flex; flex-direction: column; gap: 12px; }
+.ex-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px 20px; display: flex; gap: 16px; }
+.ex-card.done { background: #f0fdf4; border-color: #bbf7d0; }
+.ex-card.done .ex-num { background: #10b981; }
+.ex-card.done h4 { text-decoration: line-through; color: #94a3b8; }
+.ex-num { width: 32px; height: 32px; background: #2563eb; color: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; }
+.ex-body { flex: 1; }
+.ex-row { display: flex; justify-content: space-between; align-items: flex-start; }
+.ex-info h4 { font-size: 1rem; font-weight: 600; color: #1e293b; margin-bottom: 8px; }
+.ex-meta { display: flex; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
+.ex-meta span { display: flex; align-items: center; gap: 4px; font-size: 0.8rem; color: #64748b; }
+.ex-meta mat-icon { font-size: 14px; width: 14px; height: 14px; }
+.ex-cat { display: inline-block; padding: 3px 10px; background: #e0e7ff; color: #4f46e5; border-radius: 6px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; }
+.ex-desc { color: #64748b; font-size: 0.85rem; line-height: 1.5; margin-top: 12px; }

@@ -1,3 +1,12 @@
+<<<<<<< HEAD
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { initDatabase } from './config/database';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler';
+import authRoutes from './routes/authRoutes';
+import planRoutes from './routes/planRoutes';
+=======
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -6,12 +15,41 @@ import profileRoutes from './routes/profile.routes';
 import workoutsRoutes from './routes/workouts.routes';
 import mealsRoutes from './routes/meals.routes';
 import progressRoutes from './routes/progress.routes';
+>>>>>>> 519f709e43c7e95fa57c44864e52a4317045d85b
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+<<<<<<< HEAD
+app.use(cors());
+app.use(express.json());
+
+app.use('/api/auth', authRoutes);
+app.use('/api/plans', planRoutes);
+
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'OK', message: 'Fitness Planner API is running' });
+});
+
+app.use(notFoundHandler);
+app.use(errorHandler);
+
+const startServer = async () => {
+  try {
+    await initDatabase();
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
+};
+
+startServer();
+=======
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -57,3 +95,4 @@ app.listen(PORT, () => {
   console.log(`💡 Make sure MySQL is running and database is set up`);
 });
 
+>>>>>>> 519f709e43c7e95fa57c44864e52a4317045d85b
